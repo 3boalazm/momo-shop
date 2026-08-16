@@ -1,6 +1,6 @@
 import { Link } from "wouter";
-import { ASSETS } from "@/assets";
 import { ArrowRight, Instagram } from "lucide-react";
+import heroBanner from "@/components/media/Hero Banner.png";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/motion/Reveal";
 import { useProducts } from "@/hooks/useProducts";
@@ -15,7 +15,7 @@ export default function Home() {
       {/* ===== HERO ===== */}
       <section className="relative w-full h-[calc(100vh-7rem)] min-h-[600px] overflow-hidden" style={{ backgroundColor: "#0a0a0a", marginTop: "-7rem" }}>
         <img
-          src={ASSETS.heroBanner.compressed}
+          src={heroBanner}
           alt="Élan Collective"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
