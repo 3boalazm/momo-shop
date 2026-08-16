@@ -3,8 +3,10 @@ import { toast } from "sonner";
 import type { Product } from "@/data/products";
 import { CURRENCY_SYMBOL } from "@shared/const";
 import { useCart } from "@/contexts/CartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { t } = useLanguage();
   const onSale = typeof product.compareAtPrice === "number";
   const saved = onSale ? product.compareAtPrice! - product.price : 0;
   const { addItem } = useCart();
@@ -21,7 +23,7 @@ export default function ProductCard({ product }: { product: Product }) {
       color: product.colors[0]?.name || "Default",
       size: "M",
     });
-    toast.success(`${product.name} added to cart`);
+    toast.success(t("product.quickAdded", { name: product.name }));
   };
 
   return (
@@ -29,9 +31,9 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="product-card group glass glass-hover overflow-hidden" style={{ borderRadius: "14px" }}>
         <div className="product-card__media" style={{ borderRadius: 0 }}>
           {onSale ? (
-            <span className="badge-sale">Save {saved} {CURRENCY_SYMBOL}</span>
+            <span className="badge-sale">{t("product.saveAmount", { amount: saved, currency: CURRENCY_SYMBOL })}</span>
           ) : product.isNew ? (
-            <span className="badge-new">New</span>
+            <span className="badge-new">{t("product.new")}</span>
           ) : null}
 
           <img
@@ -52,7 +54,7 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
 
           <button className="quick-add" onClick={handleQuickAdd}>
-            + Quick Add
+            {t("product.quickAdd")}
           </button>
         </div>
 

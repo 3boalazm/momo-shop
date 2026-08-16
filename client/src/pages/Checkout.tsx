@@ -48,10 +48,10 @@ export default function Checkout() {
     try {
       const applied = await validateCoupon(code, subtotal);
       setCoupon(applied);
-      toast.success(`Coupon ${applied.code} applied — ${applied.discountAmount.toLocaleString()} LE off`);
+      toast.success(t("checkout.couponApplied", { code: applied.code, amount: applied.discountAmount.toLocaleString() }));
     } catch (err) {
       setCoupon(null);
-      toast.error(err instanceof Error ? err.message : "Invalid coupon");
+      toast.error(err instanceof Error ? err.message : t("checkout.invalidCoupon"));
     } finally {
       setCouponLoading(false);
     }
@@ -65,7 +65,7 @@ export default function Checkout() {
   const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.address || !formData.governorate || !formData.city) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("checkout.fillRequiredFields"));
       return;
     }
     setStep("payment");
@@ -74,7 +74,7 @@ export default function Checkout() {
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cartItems.length === 0) {
-      toast.error("Your cart is empty");
+      toast.error(t("cart.empty"));
       return;
     }
     setIsSubmitting(true);
@@ -115,7 +115,7 @@ export default function Checkout() {
       const url = `https://accept.paymob.com/unifiedcheckout/?publicKey=${encodeURIComponent(publicKey)}&clientSecret=${encodeURIComponent(clientSecret)}`;
       window.location.href = url;
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to place order. Please try again.");
+      toast.error(err instanceof Error ? err.message : t("checkout.orderFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -332,7 +332,7 @@ export default function Checkout() {
                     <CreditCard className="w-5 h-5 text-accent" />
                     <div>
                       <h3 className="font-bold">{t("checkout.online")}</h3>
-                      <p className="text-dim text-sm">Card, Meeza, Vodafone Cash, InstaPay.</p>
+                      <p className="text-dim text-sm">{t("checkout.onlineDesc")}</p>
                     </div>
                   </div>
                 </div>
@@ -346,7 +346,7 @@ export default function Checkout() {
                   {coupon ? (
                     <div className="flex items-center justify-between">
                       <span className="text-sm">
-                        <span className="text-accent font-bold">{coupon.code}</span> applied
+                        <span className="text-accent font-bold">{coupon.code}</span> {t("checkout.couponAppliedLabel")}
                       </span>
                       <button onClick={handleRemoveCoupon} className="text-dim hover:text-red-400 text-xs underline">
                         {t("checkout.remove")}
@@ -415,7 +415,7 @@ export default function Checkout() {
                 variant="outline"
                 className="w-full"
               >
-                Back
+                {t("checkout.back")}
               </Button>
             </div>
           </form>

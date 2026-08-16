@@ -1,12 +1,22 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { translations, type Lang, type TranslationKey } from "@/i18n/translations";
 
+type TranslateParams = Record<string, string | number>;
+
 interface LanguageContextValue {
   lang: Lang;
   dir: "ltr" | "rtl";
-  t: (key: TranslationKey) => string;
+  t: (key: TranslationKey, params?: TranslateParams) => string;
   setLang: (lang: Lang) => void;
   toggleLang: () => void;
+}
+
+function interpolate(str: string, params?: TranslateParams): string {
+  if (!params) return str;
+  return Object.entries(params).reduce(
+    (acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)),
+    str
+  );
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -35,8 +45,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLang = (l: Lang) => setLangState(l);
   const toggleLang = () => setLangState((prev) => (prev === "en" ? "ar" : "en"));
 
-  const t = (key: TranslationKey): string => {
-    return translations[lang][key] ?? translations.en[key] ?? key;
+  const t = (key: TranslationKey, params?: TranslateParams): string => {
+    const str = translations[lang][key] ?? translations.en[key] ?? key;
+    return interpolate(str, params);
   };
 
   return (
@@ -53,7 +64,7 @@ export function useLanguage() {
     return {
       lang: "en" as Lang,
       dir: "ltr" as const,
-      t: (key: TranslationKey) => translations.en[key] ?? key,
+      t: (key: TranslationKey, params?: TranslateParams) => interpolate(translations.en[key] ?? key, params),
       setLang: () => {},
       toggleLang: () => {},
     };

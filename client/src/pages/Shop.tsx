@@ -16,7 +16,7 @@ const CAT_KEY: Record<string, TranslationKey> = {
 };
 
 export default function Shop() {
-  usePageTitle("Shop All", "Browse the full Élan Collective streetwear drop — tees, denim, and hoodies. Secure online payment, shipped across Egypt.");
+  usePageTitle("Shop All", "Browse the full OLTRÈ Collective streetwear drop — tees, denim, and hoodies. Secure online payment, shipped across Egypt.");
   const { products, loading } = useProducts();
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

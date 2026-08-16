@@ -75,7 +75,7 @@ export default function Navbar() {
             <Link href="/">
               <img
                 src={logo}
-                alt="Élan Collective"
+                alt={t("brand.name")}
                 className="h-8 md:h-9 w-auto cursor-pointer select-none"
               />
             </Link>

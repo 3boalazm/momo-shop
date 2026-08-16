@@ -155,7 +155,7 @@ export default function AdminDashboard() {
         <div className="w-full max-w-sm glass-strong p-8" style={{ borderRadius: "16px" }}>
           <div className="text-center mb-8">
             <Link href="/">
-              <img src={logo} alt="Élan Collective" className="h-10 w-auto mx-auto" />
+              <img src={logo} alt="OLTRÈ Collective" className="h-10 w-auto mx-auto" />
             </Link>
             <p className="text-dim text-sm mt-2 uppercase tracking-widest">Admin Access</p>
           </div>
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
                 type="email"
                 value={staffEmail}
                 onChange={(e) => setStaffEmail(e.target.value)}
-                placeholder="you@elancollective.com"
+                placeholder="you@oltrecollective.com"
                 className="w-full bg-transparent border border-momo text-white px-4 py-3 placeholder:text-dim focus:outline-none focus:border-accent"
                 style={{ borderRadius: 0 }}
               />

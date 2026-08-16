@@ -13,10 +13,10 @@ export default function Footer() {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) {
-      toast.error("Enter a valid email");
+      toast.error(t("footer.invalidEmail"));
       return;
     }
-    toast.success("You're on the list.");
+    toast.success(t("footer.subscribed"));
     setEmail("");
   };
 
@@ -53,7 +53,7 @@ export default function Footer() {
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           <div className="col-span-2 md:col-span-1">
-            <img src={logo} alt="Élan Collective" className="h-9 w-auto" />
+            <img src={logo} alt={t("brand.name")} className="h-9 w-auto" />
             <p className="mt-4 text-dim text-sm leading-relaxed max-w-xs">
               {t("footer.tagline")}
             </p>
@@ -95,7 +95,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-bold tracking-widest uppercase text-dim mb-4">{t("footer.connect")}</h3>
-            <a href="https://instagram.com/elancollective" target="_blank" rel="noopener noreferrer"
+            <a href="https://instagram.com/oltrecollective" target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm nav-text hover:text-accent transition-colors">
               <Instagram className="w-4 h-4" /> Instagram
             </a>
@@ -103,7 +103,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-momo flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-dim">
-          <span>© {new Date().getFullYear()} Élan Collective. {t("footer.rights")}</span>
+          <span>© {new Date().getFullYear()} {t("brand.name")}. {t("footer.rights")}</span>
           <span>Cairo, Egypt</span>
         </div>
       </div>

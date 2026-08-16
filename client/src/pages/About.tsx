@@ -7,7 +7,7 @@ export default function About() {
       {/* Header */}
       <section className="section-padding-sm border-b border-momo">
         <div className="container">
-          <h1 className="heading-section mb-2">About Élan Collective</h1>
+          <h1 className="heading-section mb-2">About OLTRÈ Collective</h1>
           <p className="text-dim">Built for culture. Driven by individuality.</p>
         </div>
       </section>
@@ -18,7 +18,7 @@ export default function About() {
           <h2 className="heading-subsection mb-6">Our Mission</h2>
           <div className="space-y-4 text-lg leading-relaxed mb-12">
             <p>
-              Élan Collective is rooted in street culture. We create pieces that speak to the
+              OLTRÈ Collective is rooted in street culture. We create pieces that speak to the
               confident, the bold, the unapologetically individual. Every garment is designed
               with intention—built to last, crafted to inspire.
             </p>
@@ -74,7 +74,7 @@ export default function About() {
           </p>
 
           <div className="glass p-8 mb-12" style={{ borderRadius: "16px" }}>
-            <h3 className="font-bold text-xl mb-4">Why Choose Élan Collective?</h3>
+            <h3 className="font-bold text-xl mb-4">Why Choose OLTRÈ Collective?</h3>
             <ul className="space-y-3 text-lg">
               <li className="flex items-start gap-3">
                 <span className="text-accent font-bold">✓</span>

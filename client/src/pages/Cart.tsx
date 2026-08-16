@@ -35,9 +35,9 @@ export default function Cart() {
         subtotal,
       });
       setSaved(true);
-      toast.success("Saved! We'll hold your cart and reach out on WhatsApp.");
+      toast.success(t("cart.saved"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not save cart");
+      toast.error(err instanceof Error ? err.message : t("cart.saveCartError"));
     }
   };
 
@@ -47,7 +47,7 @@ export default function Cart() {
       (it) => `• ${it.name} (${it.color}/${it.size}) ×${it.quantity} — ${it.price * it.quantity} ${CURRENCY_SYMBOL}`
     );
     const msg =
-      `مرحباً Élan Collective 👋\nحابب أطلب:\n\n${lines.join("\n")}\n\n` +
+      `مرحباً أولتري 👋\nحابب أطلب:\n\n${lines.join("\n")}\n\n` +
       `الإجمالي: ${subtotal} ${CURRENCY_SYMBOL}\n\nياريت تأكيد الطلب والتوصيل. شكراً!`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
@@ -95,7 +95,7 @@ export default function Cart() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-lg mb-1 truncate">{item.name}</h3>
                   <p className="text-sm text-dim mb-3">
-                    {item.color} • Size {item.size}
+                    {item.color} • {t("product.size")} {item.size}
                   </p>
                   <p className="text-2xl font-bold text-accent">{item.price} {CURRENCY_SYMBOL}</p>
                 </div>
@@ -103,7 +103,7 @@ export default function Cart() {
                   <button
                     onClick={() => removeItem(item.lineId)}
                     className="text-dim hover:text-red-500 transition-colors"
-                    aria-label="Remove item"
+                    aria-label={t("cart.removeItem")}
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -111,7 +111,7 @@ export default function Cart() {
                     <button
                       onClick={() => updateQuantity(item.lineId, item.quantity - 1)}
                       className="p-2 hover:surface-2"
-                      aria-label="Decrease quantity"
+                      aria-label={t("cart.decreaseQty")}
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -119,7 +119,7 @@ export default function Cart() {
                     <button
                       onClick={() => updateQuantity(item.lineId, item.quantity + 1)}
                       className="p-2 hover:surface-2"
-                      aria-label="Increase quantity"
+                      aria-label={t("cart.increaseQty")}
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -132,7 +132,7 @@ export default function Cart() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="glass p-6 sticky top-20" style={{ borderRadius: "16px" }}>
-              <h2 className="font-bold text-lg mb-6">Order Summary</h2>
+              <h2 className="font-bold text-lg mb-6">{t("checkout.orderSummary")}</h2>
 
               <div className="space-y-4 mb-6 pb-6 border-b border-momo">
                 <div className="flex justify-between">

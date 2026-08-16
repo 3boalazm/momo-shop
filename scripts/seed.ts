@@ -1,5 +1,5 @@
 /**
- * Seed script — inserts Élan Collective's core products + variants into Neon.
+ * Seed script — inserts OLTRÈ Collective's core products + variants into Neon.
  *
  * Usage:
  *   pnpm db:seed          (reads DATABASE_URL from .env)

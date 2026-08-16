@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Ruler, ChevronDown } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /** Generic streetwear size chart (cm). Collapsible. */
 const SIZE_CHART = [
@@ -12,6 +13,7 @@ const SIZE_CHART = [
 ];
 
 export default function SizeGuide({ note }: { note?: string }) {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ export default function SizeGuide({ note }: { note?: string }) {
         className="w-full flex items-center justify-between p-4 text-left"
       >
         <span className="inline-flex items-center gap-2 font-bold text-sm uppercase tracking-wide" style={{ fontFamily: "var(--font-display)" }}>
-          <Ruler className="w-4 h-4 text-accent" /> Size Guide
+          <Ruler className="w-4 h-4 text-accent" /> {t("product.sizeGuide")}
         </span>
         <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
@@ -33,10 +35,10 @@ export default function SizeGuide({ note }: { note?: string }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-dim text-xs uppercase tracking-widest">
-                  <th className="text-left py-2 font-bold">Size</th>
-                  <th className="text-left py-2 font-bold">Chest (cm)</th>
-                  <th className="text-left py-2 font-bold">Length (cm)</th>
-                  <th className="text-left py-2 font-bold">Shoulder (cm)</th>
+                  <th className="text-left py-2 font-bold">{t("sizeGuide.size")}</th>
+                  <th className="text-left py-2 font-bold">{t("sizeGuide.chest")}</th>
+                  <th className="text-left py-2 font-bold">{t("sizeGuide.length")}</th>
+                  <th className="text-left py-2 font-bold">{t("sizeGuide.shoulder")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -51,7 +53,7 @@ export default function SizeGuide({ note }: { note?: string }) {
               </tbody>
             </table>
           </div>
-          <p className="text-dim text-xs mt-3">Measurements are approximate. Allow 1-2 cm tolerance.</p>
+          <p className="text-dim text-xs mt-3">{t("sizeGuide.tolerance")}</p>
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 import type { CreateOrderInput } from "@shared/orderTypes";
 
 /**
- * Thin fetch wrapper for the Élan API (Vercel serverless functions under /api).
+ * Thin fetch wrapper for the OLTRÈ API (Vercel serverless functions under /api).
  */
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`/api${path}`, {

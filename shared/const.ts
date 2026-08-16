@@ -37,4 +37,4 @@ export const NOT_ADMIN_ERR_MSG = "Only admins can access this resource";
 export const UNAUTHED_ERR_MSG = "You must be logged in to access this resource";
 
 // Brand WhatsApp number for order-via-WhatsApp (international format, no + or spaces)
-export const WHATSAPP_NUMBER = "201000000000"; // TODO: replace with Élan's real number
+export const WHATSAPP_NUMBER = "201000000000"; // TODO: replace with OLTRÈ's real number

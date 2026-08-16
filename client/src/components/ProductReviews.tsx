@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
 import { fetchReviews, submitReview, type Review } from "@/lib/api";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function Stars({ value, size = 16 }: { value: number; size?: number }) {
   return (
@@ -18,6 +19,7 @@ function Stars({ value, size = 16 }: { value: number; size?: number }) {
 }
 
 export default function ProductReviews({ productId }: { productId: number }) {
+  const { t } = useLanguage();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [average, setAverage] = useState(0);
   const [count, setCount] = useState(0);
@@ -47,7 +49,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
 
   const handleSubmit = async () => {
     if (!name.trim()) {
-      toast.error("Please enter your name");
+      toast.error(t("reviews.nameRequired"));
       return;
     }
     setSubmitting(true);
@@ -59,11 +61,11 @@ export default function ProductReviews({ productId }: { productId: number }) {
         title: title.trim() || undefined,
         body: body.trim() || undefined,
       });
-      toast.success(res.message || "Review submitted!");
+      toast.success(res.message || t("reviews.submitted"));
       setShowForm(false);
       setName(""); setTitle(""); setBody(""); setRating(5);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to submit review");
+      toast.error(err instanceof Error ? err.message : t("reviews.submitFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -73,18 +75,18 @@ export default function ProductReviews({ productId }: { productId: number }) {
     <section className="section-padding container border-t border-momo">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h2 className="heading-section mb-2">Reviews</h2>
+          <h2 className="heading-section mb-2">{t("reviews.title")}</h2>
           {count > 0 ? (
             <div className="flex items-center gap-3">
               <Stars value={average} size={20} />
-              <span className="text-dim text-sm">{average.toFixed(1)} · {count} review{count !== 1 ? "s" : ""}</span>
+              <span className="text-dim text-sm">{average.toFixed(1)} · {count} {t(count !== 1 ? "reviews.plural" : "reviews.singular")}</span>
             </div>
           ) : (
-            <p className="text-dim text-sm">No reviews yet — be the first.</p>
+            <p className="text-dim text-sm">{t("reviews.noReviews")}</p>
           )}
         </div>
         <button onClick={() => setShowForm((s) => !s)} className="btn-outline-light self-start">
-          {showForm ? "Cancel" : "Write a Review"}
+          {showForm ? t("reviews.cancel") : t("reviews.writeReview")}
         </button>
       </div>
 
@@ -93,7 +95,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
         <div className="glass p-6 mb-8" style={{ borderRadius: "16px" }}>
           <div className="space-y-4 max-w-lg">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Your Rating</label>
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("reviews.yourRating")}</label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button key={n} onClick={() => setRating(n)} aria-label={`${n} stars`}>
@@ -102,10 +104,10 @@ export default function ProductReviews({ productId }: { productId: number }) {
                 ))}
               </div>
             </div>
-            <Input label="Name" value={name} onChange={setName} />
-            <Input label="Title (optional)" value={title} onChange={setTitle} />
+            <Input label={t("reviews.name")} value={name} onChange={setName} />
+            <Input label={t("reviews.titleOptional")} value={title} onChange={setTitle} />
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Review (optional)</label>
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("reviews.reviewOptional")}</label>
               <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
@@ -114,9 +116,9 @@ export default function ProductReviews({ productId }: { productId: number }) {
               />
             </div>
             <button onClick={handleSubmit} disabled={submitting} className="btn-primary disabled:opacity-60">
-              {submitting ? "Submitting..." : "Submit Review"}
+              {submitting ? t("reviews.submitting") : t("reviews.submitReview")}
             </button>
-            <p className="text-dim text-xs">Reviews are published after approval.</p>
+            <p className="text-dim text-xs">{t("reviews.publishNote")}</p>
           </div>
         </div>
       )}

@@ -44,7 +44,7 @@ export default function AdminAbandonedCarts({ token }: { token: string }) {
       (it) => `• ${it.name} (${it.color}/${it.size}) ×${it.quantity}`
     );
     const msg =
-      `مرحباً${c.name ? " " + c.name : ""} 👋\nلاحظنا إنك سيبت السلة دي في Élan Collective:\n\n${lines.join("\n")}\n\n` +
+      `مرحباً${c.name ? " " + c.name : ""} 👋\nلاحظنا إنك سيبت السلة دي في أولتري:\n\n${lines.join("\n")}\n\n` +
       `الإجمالي: ${Number(c.subtotal).toLocaleString()} ${CURRENCY_SYMBOL}\n\nحابين نكمّل طلبك؟ 🔥`;
     const phone = c.phone.replace(/[\s\-+]/g, "").replace(/^0/, "20");
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;

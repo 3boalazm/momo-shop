@@ -41,7 +41,7 @@ export default function LoadingScreen() {
               className="font-black leading-none"
               style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.04em" }}
             >
-              <img src={logo} alt="Élan Collective" className="h-16 md:h-24 w-auto mx-auto" />
+              <img src={logo} alt="OLTRÈ Collective" className="h-16 md:h-24 w-auto mx-auto" />
               <motion.div
                 initial={{ y: 16, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

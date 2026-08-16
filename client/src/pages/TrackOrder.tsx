@@ -7,6 +7,13 @@ import { trackOrder, type TrackedOrder } from "@/lib/api";
 import { CURRENCY_SYMBOL } from "@shared/const";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import type { TranslationKey } from "@/i18n/translations";
+
+const PAYMENT_STATUS_KEY: Record<string, TranslationKey> = {
+  Unpaid: "track.statusUnpaid",
+  Paid: "track.statusPaid",
+  Refunded: "track.statusRefunded",
+};
 
 const STEPS = [
   { key: "Pending", tkey: "track.placed", icon: Check },
@@ -21,7 +28,7 @@ function stepIndex(status: string) {
 }
 
 export default function TrackOrder() {
-  usePageTitle("Track Your Order", "Check the status of your Élan Collective order.");
+  usePageTitle("Track Your Order", "Check the status of your OLTRÈ Collective order.");
   const { t } = useLanguage();
   const [orderNumber, setOrderNumber] = useState("");
   const [phone, setPhone] = useState("");
@@ -31,7 +38,7 @@ export default function TrackOrder() {
   const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!orderNumber.trim() || !phone.trim()) {
-      toast.error("Enter your order number and phone");
+      toast.error(t("track.missingFields"));
       return;
     }
     setLoading(true);
@@ -40,7 +47,7 @@ export default function TrackOrder() {
       const data = await trackOrder(orderNumber.trim(), phone.trim());
       setResult(data);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Order not found");
+      toast.error(err instanceof Error ? err.message : t("track.notFound"));
     } finally {
       setLoading(false);
     }
@@ -61,7 +68,7 @@ export default function TrackOrder() {
             <Input
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value.toUpperCase())}
-              placeholder="ELAN-20260101-XXXXXX"
+              placeholder="OLTRE-20260101-XXXXXX"
               className="bg-transparent border-momo text-[color:var(--momo-text)] placeholder:text-dim"
             />
           </div>
@@ -127,7 +134,10 @@ export default function TrackOrder() {
             {/* Payment */}
             <div className="mt-6 pt-4 border-t border-momo flex items-center justify-between text-sm">
               <span className="text-dim">{t("track.payment")}</span>
-              <span className="font-semibold">{result.order.paymentMethod} · {result.order.paymentStatus}</span>
+              <span className="font-semibold">
+                {result.order.paymentMethod === "Online" ? t("track.payOnline") : result.order.paymentMethod} ·{" "}
+                {PAYMENT_STATUS_KEY[result.order.paymentStatus] ? t(PAYMENT_STATUS_KEY[result.order.paymentStatus]) : result.order.paymentStatus}
+              </span>
             </div>
 
             {/* Items */}

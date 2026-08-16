@@ -6,7 +6,7 @@ import { useEffect } from "react";
  */
 export function usePageTitle(title: string, description?: string) {
   useEffect(() => {
-    const full = title ? `${title} · Élan Collective` : "Élan Collective — Urban Streetwear";
+    const full = title ? `${title} · OLTRÈ Collective` : "OLTRÈ Collective — Urban Streetwear";
     document.title = full;
 
     if (description) {

@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Heart, Trash2, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { ASSETS } from "@/assets";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface WishlistItem {
   id: number;
@@ -19,27 +20,28 @@ const MOCK_WISHLIST: WishlistItem[] = [
 ];
 
 export default function Wishlist() {
+  const { t } = useLanguage();
   const [items, setItems] = useState<WishlistItem[]>(MOCK_WISHLIST);
 
   const removeItem = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
-    toast.success("Item removed from wishlist");
+    toast.success(t("wishlist.itemRemoved"));
   };
 
   const addToCart = (item: WishlistItem) => {
-    toast.success(`${item.name} added to cart`);
+    toast.success(t("wishlist.addedToCart", { name: item.name }));
   };
 
   if (items.length === 0) {
     return (
       <div style={{ backgroundColor: "var(--momo-bg)" }}>
         <div className="section-padding container glow-field overflow-hidden">
-          <h1 className="heading-section mb-8">My Wishlist</h1>
+          <h1 className="heading-section mb-8">{t("wishlist.title")}</h1>
           <div className="text-center py-20">
             <Heart className="w-16 h-16 mx-auto mb-4 text-dim" />
-            <p className="text-xl text-dim mb-8">Your wishlist is empty</p>
+            <p className="text-xl text-dim mb-8">{t("wishlist.empty")}</p>
             <Link href="/shop">
-              <Button className="btn-primary">Start Shopping</Button>
+              <Button className="btn-primary">{t("wishlist.startShopping")}</Button>
             </Link>
           </div>
         </div>
@@ -50,7 +52,7 @@ export default function Wishlist() {
   return (
     <div style={{ backgroundColor: "var(--momo-bg)" }}>
       <div className="section-padding container glow-field overflow-hidden">
-        <h1 className="heading-section mb-8">My Wishlist ({items.length})</h1>
+        <h1 className="heading-section mb-8">{t("wishlist.titleCount", { count: items.length })}</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((item) => (
@@ -77,12 +79,12 @@ export default function Wishlist() {
                 <div className="flex gap-2">
                   <Link href={`/product/${item.slug}`}>
                     <Button variant="outline" className="flex-1">
-                      View
+                      {t("wishlist.view")}
                     </Button>
                   </Link>
                   <Button onClick={() => addToCart(item)} className="flex-1 btn-primary">
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to Cart
+                    {t("wishlist.addToCart")}
                   </Button>
                 </div>
               </div>

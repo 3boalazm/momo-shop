@@ -3,12 +3,12 @@ import { getSession } from "./auth.js";
 import { getDb, schema } from "./db.js";
 import { eq } from "drizzle-orm";
 
-/** Generate a human-friendly order number: ELAN-20260621-AB12CD */
+/** Generate a human-friendly order number: OLTRE-20260621-AB12CD */
 export function generateOrderNumber(): string {
   const d = new Date();
   const date = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   const rand = Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `ELAN-${date}-${rand}`;
+  return `OLTRE-${date}-${rand}`;
 }
 
 /** Apply permissive CORS for same-origin SPA + handle preflight */

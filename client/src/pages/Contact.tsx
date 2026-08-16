@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,10 +28,10 @@ export default function Contact() {
     try {
       // Simulate form submission
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success("Message sent! We'll get back to you soon.");
+      toast.success(t("contact.sent"));
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch {
-      toast.error("Failed to send message. Please try again.");
+      toast.error(t("contact.sendFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -40,8 +42,8 @@ export default function Contact() {
       {/* Header */}
       <section className="section-padding-sm border-b border-momo">
         <div className="container">
-          <h1 className="heading-section mb-2">Contact Us</h1>
-          <p className="text-dim">We'd love to hear from you</p>
+          <h1 className="heading-section mb-2">{t("contact.title")}</h1>
+          <p className="text-dim">{t("contact.subtitle")}</p>
         </div>
       </section>
 
@@ -50,12 +52,12 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div>
-            <h2 className="heading-subsection mb-8">Get in Touch</h2>
+            <h2 className="heading-subsection mb-8">{t("contact.getInTouch")}</h2>
             <div className="space-y-8">
               <div className="flex gap-4">
                 <Mail className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold mb-1">Email</h3>
+                  <h3 className="font-bold mb-1">{t("contact.email")}</h3>
                   <p className="text-dim">hello@momocollective.com</p>
                 </div>
               </div>
@@ -63,7 +65,7 @@ export default function Contact() {
               <div className="flex gap-4">
                 <Phone className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold mb-1">Phone</h3>
+                  <h3 className="font-bold mb-1">{t("contact.phone")}</h3>
                   <p className="text-dim">+20 (123) 456-7890</p>
                 </div>
               </div>
@@ -71,15 +73,15 @@ export default function Contact() {
               <div className="flex gap-4">
                 <MapPin className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold mb-1">Location</h3>
-                  <p className="text-dim">Cairo, Egypt</p>
+                  <h3 className="font-bold mb-1">{t("contact.location")}</h3>
+                  <p className="text-dim">{t("contact.locationValue")}</p>
                 </div>
               </div>
 
               <div className="glass p-6 mt-8" style={{ borderRadius: "16px" }}>
-                <h3 className="font-bold mb-3">Response Time</h3>
+                <h3 className="font-bold mb-3">{t("contact.responseTime")}</h3>
                 <p className="text-dim">
-                  We typically respond to all inquiries within 24 hours during business days.
+                  {t("contact.responseTimeSub")}
                 </p>
               </div>
             </div>
@@ -89,31 +91,31 @@ export default function Contact() {
           <div>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold mb-2">Name</label>
+                <label className="block text-sm font-semibold mb-2">{t("contact.name")}</label>
                 <Input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your name"
+                  placeholder={t("contact.namePlaceholder")}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-2">Email</label>
+                <label className="block text-sm font-semibold mb-2">{t("contact.email")}</label>
                 <Input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="your@email.com"
+                  placeholder={t("contact.emailPlaceholder")}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-2">Phone (Optional)</label>
+                <label className="block text-sm font-semibold mb-2">{t("contact.phoneOptional")}</label>
                 <Input
                   type="tel"
                   name="phone"
@@ -124,24 +126,24 @@ export default function Contact() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-2">Subject</label>
+                <label className="block text-sm font-semibold mb-2">{t("contact.subject")}</label>
                 <Input
                   type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="How can we help?"
+                  placeholder={t("contact.subjectPlaceholder")}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-2">Message</label>
+                <label className="block text-sm font-semibold mb-2">{t("contact.message")}</label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Tell us more..."
+                  placeholder={t("contact.messagePlaceholder")}
                   rows={6}
                   className="w-full px-4 py-3 border border-momo bg-transparent text-white placeholder:text-dim focus:outline-none focus:border-accent" style={{ borderRadius: 0 }}
                   required
@@ -153,7 +155,7 @@ export default function Contact() {
                 disabled={isSubmitting}
                 className="w-full btn-primary"
               >
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? t("contact.sending") : t("contact.sendMessage")}
               </Button>
             </form>
           </div>

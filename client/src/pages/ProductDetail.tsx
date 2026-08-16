@@ -16,7 +16,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
   const { t } = useLanguage();
   usePageTitle(
     product ? product.name : "Product",
-    product ? `${product.name} — ${product.description?.slice(0, 120) || "Premium streetwear from Élan Collective."}` : undefined
+    product ? `${product.name} — ${product.description?.slice(0, 120) || "Premium streetwear from OLTRÈ Collective."}` : undefined
   );
   const { addItem } = useCart();
 
@@ -37,7 +37,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
   if (!product) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center" style={{ backgroundColor: "var(--momo-bg)" }}>
-        <p className="text-lg text-dim">Product not found.</p>
+        <p className="text-lg text-dim">{t("product.notFound")}</p>
       </div>
     );
   }
@@ -54,12 +54,12 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
       size: selectedSize,
       quantity,
     });
-    toast.success(`Added ${quantity} × ${product.name} (${selectedSize}) to cart`);
+    toast.success(t("product.addedToCart", { quantity, name: product.name, size: selectedSize }));
   };
 
   const handleToggleWishlist = () => {
     setIsWishlisted(!isWishlisted);
-    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+    toast.success(isWishlisted ? t("product.removedFromWishlist") : t("product.addedToWishlist"));
   };
 
   return (
@@ -83,7 +83,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
             >
               {onSale && (
                 <span className="badge-sale">
-                  Save {product.compareAtPrice! - product.price} {CURRENCY_SYMBOL}
+                  {t("product.saveAmount", { amount: product.compareAtPrice! - product.price, currency: CURRENCY_SYMBOL })}
                 </span>
               )}
               <img
@@ -113,7 +113,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
           <div className="space-y-8">
             <div>
               <span className="eyebrow mb-2 block">
-                {product.category === "tees" ? "T-Shirts" : product.category === "denim" ? "Denim" : "Hoodies"}
+                {product.category === "tees" ? t("cat.tees") : product.category === "denim" ? t("cat.denim") : t("cat.hoodies")}
               </span>
               <h1 className="heading-section mb-4">{product.name}</h1>
               <div className="flex items-center gap-3 mb-6">
@@ -189,7 +189,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
               </div>
               <button onClick={handleToggleWishlist} className="btn-outline-light w-full inline-flex items-center justify-center gap-2">
                 <Heart className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`} />
-                {isWishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
+                {isWishlisted ? t("product.savedToWishlist") : t("product.addToWishlist")}
               </button>
             </div>
 
@@ -212,10 +212,10 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
                   <Plus className="w-4 h-4 group-open:rotate-45 transition-transform" />
                 </summary>
                 <div className="mt-3 text-sm text-[color:var(--momo-text)] opacity-80 space-y-1.5">
-                  <p>• Premium heavyweight fabric, built to last.</p>
-                  <p>• Machine wash cold, inside out.</p>
-                  <p>• Do not bleach. Tumble dry low.</p>
-                  <p>• Iron on reverse if needed.</p>
+                  <p>• {t("product.careFabric")}</p>
+                  <p>• {t("product.careWash")}</p>
+                  <p>• {t("product.careBleach")}</p>
+                  <p>• {t("product.careIron")}</p>
                 </div>
               </details>
               <details className="glass p-4 group" style={{ borderRadius: "12px" }}>
@@ -224,10 +224,10 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
                   <Plus className="w-4 h-4 group-open:rotate-45 transition-transform" />
                 </summary>
                 <div className="mt-3 text-sm text-[color:var(--momo-text)] opacity-80 space-y-1.5">
-                  <p>• Secure online payment — card, Meeza, Vodafone Cash, InstaPay.</p>
-                  <p>• Free shipping on orders over 2,000 {CURRENCY_SYMBOL}.</p>
-                  <p>• Delivery within 2–5 business days.</p>
-                  <p>• Exchange within 14 days if unworn with tags.</p>
+                  <p>• {t("product.shipPayment")}</p>
+                  <p>• {t("product.shipFree", { currency: CURRENCY_SYMBOL })}</p>
+                  <p>• {t("product.shipDelivery")}</p>
+                  <p>• {t("product.shipExchange")}</p>
                 </div>
               </details>
             </div>

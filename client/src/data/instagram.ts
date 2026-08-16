@@ -14,8 +14,8 @@ export interface InstagramPost {
   caption?: string;
 }
 
-export const INSTAGRAM_HANDLE = "@elancollective";
-export const INSTAGRAM_URL = "https://instagram.com/elancollective";
+export const INSTAGRAM_HANDLE = "@oltrecollective";
+export const INSTAGRAM_URL = "https://instagram.com/oltrecollective";
 
 /**
  * Replace these with real post images + links.

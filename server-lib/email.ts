@@ -38,7 +38,7 @@ export async function sendOrderEmail(order: Order, items: OrderItem[]): Promise<
   const html = `
   <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#111">
     <div style="background:#0a0a0a;color:#fff;padding:24px;text-align:center">
-      <h1 style="margin:0;font-size:24px">ÉLAN<span style="color:#ff5722">.</span> — New Order</h1>
+      <h1 style="margin:0;font-size:24px">OLTRÈ<span style="color:#ff5722">.</span> — New Order</h1>
     </div>
     <div style="padding:24px">
       <h2 style="margin:0 0 4px">Order ${escapeHtml(order.orderNumber)}</h2>
@@ -78,7 +78,7 @@ export async function sendOrderEmail(order: Order, items: OrderItem[]): Promise<
   </div>`;
 
   await transporter.sendMail({
-    from: `"Élan Collective" <${user}>`,
+    from: `"OLTRÈ Collective" <${user}>`,
     to,
     subject: `🛍️ New Order ${order.orderNumber} — ${order.total} LE (${order.paymentMethod})`,
     html,

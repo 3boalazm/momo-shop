@@ -7,6 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { fetchMyOrders, fetchLoyaltyHistory, redeemPoints, type MyOrder, type LoyaltyTransaction } from "@/lib/api";
 import { CURRENCY_SYMBOL } from "@shared/const";
 import { MIN_REDEEM_POINTS, computeRedemptionValue } from "@shared/loyalty";
+import { useLanguage } from "@/contexts/LanguageContext";
+import type { TranslationKey } from "@/i18n/translations";
 
 const STATUS_COLOR: Record<string, string> = {
   Pending: "text-accent",
@@ -16,7 +18,16 @@ const STATUS_COLOR: Record<string, string> = {
   Cancelled: "text-red-400",
 };
 
+const STATUS_KEY: Record<string, TranslationKey> = {
+  Pending: "profile.statusPending",
+  Confirmed: "profile.statusConfirmed",
+  Shipped: "profile.statusShipped",
+  Delivered: "profile.statusDelivered",
+  Cancelled: "profile.statusCancelled",
+};
+
 export default function Profile() {
+  const { t } = useLanguage();
   const { user, loading, logout, refreshUser } = useAuth();
   const [, setLocation] = useLocation();
   const [tab, setTab] = useState<"orders" | "rewards" | "account">("orders");
@@ -50,12 +61,12 @@ export default function Profile() {
     setRedeeming(true);
     try {
       const { coupon, value } = await redeemPoints(redeemAmount);
-      toast.success(`Redeemed! Use code ${coupon} for ${value} ${CURRENCY_SYMBOL} off at checkout.`);
+      toast.success(t("profile.redeemSuccess", { coupon, value, currency: CURRENCY_SYMBOL }));
       const { transactions } = await fetchLoyaltyHistory();
       setTransactions(transactions);
       await refreshUser();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not redeem points");
+      toast.error(err instanceof Error ? err.message : t("profile.redeemError"));
     } finally {
       setRedeeming(false);
     }
@@ -63,7 +74,7 @@ export default function Profile() {
 
   const handleLogout = async () => {
     await logout();
-    toast.success("Logged out successfully");
+    toast.success(t("profile.loggedOut"));
     setLocation("/");
   };
 
@@ -81,12 +92,12 @@ export default function Profile() {
         {/* Header */}
         <div className="flex justify-between items-center mb-12 flex-wrap gap-4">
           <div>
-            <h1 className="heading-section mb-2">My Account</h1>
+            <h1 className="heading-section mb-2">{t("profile.title")}</h1>
             <p className="text-dim">{user.email}</p>
           </div>
           <Button onClick={handleLogout} variant="outline">
             <LogOut className="w-4 h-4 mr-2" />
-            Logout
+            {t("profile.logout")}
           </Button>
         </div>
 
@@ -99,7 +110,7 @@ export default function Profile() {
             }`}
           >
             <Package className="w-4 h-4 inline mr-2" />
-            Orders
+            {t("profile.tabOrders")}
           </button>
           <button
             onClick={() => setTab("rewards")}
@@ -108,7 +119,7 @@ export default function Profile() {
             }`}
           >
             <Gift className="w-4 h-4 inline mr-2" />
-            Rewards
+            {t("profile.tabRewards")}
           </button>
           <button
             onClick={() => setTab("account")}
@@ -117,7 +128,7 @@ export default function Profile() {
             }`}
           >
             <UserIcon className="w-4 h-4 inline mr-2" />
-            Account
+            {t("profile.tabAccount")}
           </button>
         </div>
 
@@ -131,9 +142,9 @@ export default function Profile() {
             ) : orders.length === 0 ? (
               <div className="text-center py-12">
                 <Package className="w-12 h-12 mx-auto text-dim mb-4" />
-                <p className="text-dim mb-4">No orders yet</p>
+                <p className="text-dim mb-4">{t("profile.noOrders")}</p>
                 <Link href="/shop">
-                  <Button className="btn-primary">Start Shopping</Button>
+                  <Button className="btn-primary">{t("profile.startShopping")}</Button>
                 </Link>
               </div>
             ) : (
@@ -145,7 +156,7 @@ export default function Profile() {
                       <p className="text-sm text-dim">{new Date(order.createdAt).toLocaleDateString("en-EG")}</p>
                     </div>
                     <span className={`text-sm font-bold uppercase tracking-widest ${STATUS_COLOR[order.status] || "text-dim"}`}>
-                      {order.status}
+                      {STATUS_KEY[order.status] ? t(STATUS_KEY[order.status]) : order.status}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -153,7 +164,7 @@ export default function Profile() {
                     <div className="flex items-center gap-4">
                       <p className="text-xl font-bold text-accent">{Number(order.total).toLocaleString()} {CURRENCY_SYMBOL}</p>
                       <Link href={`/track?order=${order.orderNumber}`}>
-                        <Button variant="outline" size="sm">Track</Button>
+                        <Button variant="outline" size="sm">{t("profile.track")}</Button>
                       </Link>
                     </div>
                   </div>
@@ -167,18 +178,17 @@ export default function Profile() {
         {tab === "rewards" && (
           <div className="space-y-6">
             <div className="glass-accent p-6" style={{ borderRadius: "14px" }}>
-              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">Your Balance</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">{t("profile.yourBalance")}</p>
               <p className="text-4xl font-bold text-accent" style={{ fontFamily: "var(--font-display)" }}>
-                {user.loyaltyPoints ?? 0} <span className="text-lg">points</span>
+                {user.loyaltyPoints ?? 0} <span className="text-lg">{t("profile.points")}</span>
               </p>
               <p className="text-sm text-dim mt-2">
-                Earn {1} point per {CURRENCY_SYMBOL === "LE" ? "10 LE" : "10 EGP"} spent on delivered orders.
-                Redeem {MIN_REDEEM_POINTS}+ points for a discount code (5 points = 1 {CURRENCY_SYMBOL}).
+                {t("profile.pointsInfo", { currency: CURRENCY_SYMBOL, min: MIN_REDEEM_POINTS })}
               </p>
             </div>
 
             <div className="glass p-6" style={{ borderRadius: "14px" }}>
-              <h3 className="font-bold mb-4">Redeem Points</h3>
+              <h3 className="font-bold mb-4">{t("profile.redeemPoints")}</h3>
               <div className="flex flex-wrap items-center gap-3">
                 <input
                   type="number"
@@ -197,32 +207,32 @@ export default function Profile() {
                   disabled={redeeming || redeemAmount < MIN_REDEEM_POINTS || redeemAmount > (user.loyaltyPoints ?? 0)}
                   className="btn-primary disabled:opacity-50"
                 >
-                  {redeeming ? "Redeeming…" : "Redeem"}
+                  {redeeming ? t("profile.redeeming") : t("profile.redeem")}
                 </Button>
               </div>
               {(user.loyaltyPoints ?? 0) < MIN_REDEEM_POINTS && (
-                <p className="text-xs text-dim mt-3">You need at least {MIN_REDEEM_POINTS} points to redeem.</p>
+                <p className="text-xs text-dim mt-3">{t("profile.minPointsNeeded", { min: MIN_REDEEM_POINTS })}</p>
               )}
             </div>
 
             <div>
-              <h3 className="font-bold mb-4">History</h3>
+              <h3 className="font-bold mb-4">{t("profile.history")}</h3>
               {loyaltyLoading ? (
                 <div className="flex justify-center py-8">
                   <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
                 </div>
               ) : transactions.length === 0 ? (
-                <p className="text-dim text-sm">No activity yet — points appear here once an order is delivered.</p>
+                <p className="text-dim text-sm">{t("profile.noActivity")}</p>
               ) : (
                 <div className="space-y-2">
-                  {transactions.map((t) => (
-                    <div key={t.id} className="flex justify-between items-center p-3 glass" style={{ borderRadius: "10px" }}>
+                  {transactions.map((tx) => (
+                    <div key={tx.id} className="flex justify-between items-center p-3 glass" style={{ borderRadius: "10px" }}>
                       <div>
-                        <p className="text-sm font-semibold">{t.note || (t.type === "earn" ? "Points earned" : "Points redeemed")}</p>
-                        <p className="text-xs text-dim">{new Date(t.createdAt).toLocaleDateString("en-EG")}</p>
+                        <p className="text-sm font-semibold">{tx.note || (tx.type === "earn" ? t("profile.pointsEarned") : t("profile.pointsRedeemed"))}</p>
+                        <p className="text-xs text-dim">{new Date(tx.createdAt).toLocaleDateString("en-EG")}</p>
                       </div>
-                      <span className={`font-bold ${t.type === "earn" ? "text-green-400" : "text-red-400"}`}>
-                        {t.type === "earn" ? "+" : "−"}{t.points}
+                      <span className={`font-bold ${tx.type === "earn" ? "text-green-400" : "text-red-400"}`}>
+                        {tx.type === "earn" ? "+" : "−"}{tx.points}
                       </span>
                     </div>
                   ))}
@@ -236,16 +246,16 @@ export default function Profile() {
         {tab === "account" && (
           <div className="glass p-6 space-y-4 max-w-md" style={{ borderRadius: "14px" }}>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">Name</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">{t("profile.name")}</p>
               <p className="font-semibold">{user.name}</p>
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">Email</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">{t("profile.email")}</p>
               <p className="font-semibold">{user.email}</p>
             </div>
             {user.phone && (
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">Phone</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-dim mb-1">{t("profile.phone")}</p>
                 <p className="font-semibold">{user.phone}</p>
               </div>
             )}

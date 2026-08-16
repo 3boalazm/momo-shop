@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/components/media/Logo.png";
 
 export default function Auth() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [, setLocation] = useLocation();
   const { login, signup } = useAuth();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,20 +29,20 @@ export default function Auth() {
 
     if (mode === "signup") {
       if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-        toast.error("Please fill in all fields");
+        toast.error(t("auth.fillAllFields"));
         return;
       }
       if (formData.password.length < 8) {
-        toast.error("Password must be at least 8 characters");
+        toast.error(t("auth.passwordTooShort"));
         return;
       }
       if (formData.password !== formData.confirmPassword) {
-        toast.error("Passwords do not match");
+        toast.error(t("auth.passwordMismatch"));
         return;
       }
     } else {
       if (!formData.email || !formData.password) {
-        toast.error("Please fill in all fields");
+        toast.error(t("auth.fillAllFields"));
         return;
       }
     }
@@ -54,14 +56,14 @@ export default function Auth() {
           password: formData.password,
           phone: formData.phone || undefined,
         });
-        toast.success("Account created — welcome!");
+        toast.success(t("auth.signupSuccess"));
       } else {
         await login({ email: formData.email, password: formData.password });
-        toast.success("Logged in successfully!");
+        toast.success(t("auth.loginSuccess"));
       }
       setLocation("/profile");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "An error occurred. Please try again.");
+      toast.error(err instanceof Error ? err.message : t("auth.genericError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -76,25 +78,23 @@ export default function Auth() {
         {/* Brand */}
         <div className="text-center mb-10">
           <Link href="/">
-            <img src={logo} alt="Élan Collective" className="h-12 w-auto mx-auto" />
+            <img src={logo} alt="OLTRÈ Collective" className="h-12 w-auto mx-auto" />
           </Link>
         </div>
 
         <div className="mb-8 text-center">
           <h1 className="heading-section mb-2">
-            {mode === "login" ? "Welcome Back" : "Create Account"}
+            {mode === "login" ? t("auth.welcomeBack") : t("auth.createAccount")}
           </h1>
           <p className="text-dim">
-            {mode === "login"
-              ? "Sign in to continue shopping"
-              : "Join the collective and start shopping"}
+            {mode === "login" ? t("auth.signInSub") : t("auth.joinSub")}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 mb-6">
           {mode === "signup" && (
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Full Name</label>
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("auth.fullName")}</label>
               <input
                 type="text"
                 name="name"
@@ -108,7 +108,7 @@ export default function Auth() {
           )}
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Email</label>
+            <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("auth.email")}</label>
             <input
               type="email"
               name="email"
@@ -122,7 +122,7 @@ export default function Auth() {
 
           {mode === "signup" && (
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Phone (optional)</label>
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("auth.phoneOptional")}</label>
               <input
                 type="tel"
                 name="phone"
@@ -136,7 +136,7 @@ export default function Auth() {
           )}
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Password</label>
+            <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("auth.password")}</label>
             <input
               type="password"
               name="password"
@@ -150,7 +150,7 @@ export default function Auth() {
 
           {mode === "signup" && (
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">Confirm Password</label>
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-dim">{t("auth.confirmPassword")}</label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -164,13 +164,13 @@ export default function Auth() {
           )}
 
           <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
-            {isSubmitting ? "Processing..." : mode === "login" ? "Sign In" : "Create Account"}
+            {isSubmitting ? t("auth.processing") : mode === "login" ? t("auth.signIn") : t("auth.createAccount")}
           </button>
         </form>
 
         <div className="text-center">
           <p className="text-dim mb-3 text-sm">
-            {mode === "login" ? "Don't have an account?" : "Already have an account?"}
+            {mode === "login" ? t("auth.noAccount") : t("auth.haveAccount")}
           </p>
           <button
             onClick={() => {
@@ -180,14 +180,14 @@ export default function Auth() {
             className="text-accent font-bold uppercase tracking-widest text-sm hover:underline"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            {mode === "login" ? "Sign Up" : "Sign In"}
+            {mode === "login" ? t("auth.signUp") : t("auth.signIn")}
           </button>
         </div>
 
         <div className="mt-10 pt-8 border-t border-momo text-center">
           <Link href="/">
             <span className="text-dim text-sm hover:text-[color:var(--momo-text)] transition-colors cursor-pointer">
-              ← Back to Home
+              {t("auth.backHome")}
             </span>
           </Link>
         </div>
