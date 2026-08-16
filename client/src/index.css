@@ -1,0 +1,460 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap");
+
+@import "tailwindcss";
+
+/* ============================================================
+   ÉLAN COLLECTIVE — Dark & Edgy Streetwear Design System
+   ============================================================ */
+
+:root {
+  /* Light theme (default palette) */
+  --momo-bg: #ffffff;
+  --momo-surface: #f4f4f5;
+  --momo-surface-2: #e8e8ea;
+  --momo-border: #d8d8dc;
+  --momo-text: #0a0a0a;
+  --momo-text-dim: #6b6b70;
+  --momo-accent: #ff5722;
+  --momo-accent-hover: #e84d1c;
+  --momo-sale: #e02d2d;
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+.dark {
+  /* Dark theme */
+  --momo-bg: #0a0a0a;
+  --momo-surface: #141414;
+  --momo-surface-2: #1c1c1c;
+  --momo-border: #2a2a2a;
+  --momo-text: #f5f5f5;
+  --momo-text-dim: #8a8a8a;
+  --momo-accent: #ff5722;
+  --momo-accent-hover: #ff6e40;
+  --momo-sale: #e02d2d;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  background-color: var(--momo-bg);
+}
+
+@layer base {
+  body {
+    background-color: var(--momo-bg);
+    color: var(--momo-text);
+    font-family: var(--font-body);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--momo-text);
+  }
+  h1 { font-weight: 800; font-size: 2.5rem; line-height: 1.05; letter-spacing: -0.03em; }
+  h2 { font-weight: 800; font-size: 1.875rem; line-height: 1.1; letter-spacing: -0.02em; }
+  h3 { font-weight: 700; font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.01em; }
+  h4 { font-weight: 700; font-size: 1.25rem; line-height: 1.3; }
+  @media (min-width: 768px) {
+    h1 { font-size: 4rem; }
+    h2 { font-size: 2.5rem; }
+    h3 { font-size: 1.875rem; }
+  }
+  @media (min-width: 1024px) { h1 { font-size: 5.5rem; } }
+
+  p { font-size: 1rem; line-height: 1.6; }
+  small { font-size: 0.875rem; line-height: 1.5; }
+}
+
+.heading-hero {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 3rem;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) { .heading-hero { font-size: 5rem; } }
+@media (min-width: 1024px) { .heading-hero { font-size: 7rem; } }
+
+.heading-section {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.875rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) { .heading-section { font-size: 2.75rem; } }
+
+.heading-subsection {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 768px) { .heading-subsection { font-size: 1.5rem; } }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--momo-accent);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--momo-accent), 0 0 0 4px var(--momo-bg);
+}
+::selection { background-color: var(--momo-accent); color: #fff; }
+
+::-webkit-scrollbar { width: 0.5rem; }
+::-webkit-scrollbar-track { background-color: var(--momo-bg); }
+::-webkit-scrollbar-thumb { background-color: var(--momo-border); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--momo-accent); }
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 90rem;
+}
+@media (min-width: 768px) { .container { padding-left: 2rem; padding-right: 2rem; } }
+@media (min-width: 1024px) { .container { padding-left: 3rem; padding-right: 3rem; } }
+
+.section-padding { padding-top: 4rem; padding-bottom: 4rem; }
+@media (min-width: 768px) { .section-padding { padding-top: 6rem; padding-bottom: 6rem; } }
+.section-padding-sm { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+@media (min-width: 768px) { .section-padding-sm { padding-top: 3.5rem; padding-bottom: 3.5rem; } }
+
+.btn-primary {
+  background-color: var(--momo-accent);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.18s ease-out;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover { background-color: var(--momo-accent-hover); transform: translateY(-1px); }
+
+.btn-outline-light {
+  border: 2px solid var(--momo-text);
+  color: var(--momo-text);
+  padding: 0.85rem 2rem;
+  border-radius: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.18s ease-out;
+  background-color: transparent;
+  cursor: pointer;
+}
+.btn-outline-light:hover { background-color: var(--momo-text); color: var(--momo-bg); }
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--momo-accent);
+  color: #fff;
+}
+.marquee__track {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  min-width: 100%;
+  padding: 0.55rem 0;
+  animation: marquee-scroll 28s linear infinite;
+}
+.marquee__item {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+@media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+
+.product-card { position: relative; cursor: pointer; }
+.product-card__media {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--momo-surface);
+  aspect-ratio: 3 / 4;
+}
+.product-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+}
+.product-card__img--secondary { position: absolute; inset: 0; opacity: 0; }
+.product-card:hover .product-card__img--secondary { opacity: 1; }
+.product-card:hover .product-card__img--primary { transform: scale(1.04); }
+
+.badge-sale {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background-color: var(--momo-sale);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  z-index: 2;
+}
+.badge-new {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background-color: var(--momo-text);
+  color: var(--momo-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  z-index: 2;
+}
+
+.quick-add {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--momo-text);
+  color: var(--momo-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.75rem;
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+  z-index: 2;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.product-card:hover .quick-add { transform: translateY(0); }
+.quick-add:hover { background-color: var(--momo-accent); color: #fff; }
+
+@media (hover: none) {
+  .quick-add { transform: translateY(0); position: static; }
+  .product-card__img--secondary { display: none; }
+}
+
+.swatch {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--momo-border);
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.swatch:hover { transform: scale(1.15); }
+.swatch--active { box-shadow: 0 0 0 2px var(--momo-bg), 0 0 0 3px var(--momo-accent); }
+
+.surface { background-color: var(--momo-surface); }
+.surface-2 { background-color: var(--momo-surface-2); }
+.border-momo { border-color: var(--momo-border); }
+.text-dim { color: var(--momo-text-dim); }
+.text-accent { color: var(--momo-accent); }
+.bg-accent { background-color: var(--momo-accent); }
+.divider-accent { width: 3rem; height: 3px; background-color: var(--momo-accent); }
+
+.min-h-screen { min-height: 100vh; }
+.min-w-0 { min-width: 0; }
+.min-h-0 { min-height: 0; }
+
+/* ============================================================
+   GLASSMORPHISM — Dark Glass Panels
+   ============================================================ */
+
+:root {
+  /* Light theme glass — dark translucent panels on light bg */
+  --glass-bg: rgba(0, 0, 0, 0.04);
+  --glass-bg-strong: rgba(0, 0, 0, 0.06);
+  --glass-border: rgba(0, 0, 0, 0.10);
+  --glass-border-strong: rgba(0, 0, 0, 0.16);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-inset: rgba(0, 0, 0, 0.03);
+  --nav-bg: rgb(255, 255, 255);
+}
+
+.dark {
+  /* Dark theme glass — light translucent panels on dark bg */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-inset: rgba(255, 255, 255, 0.08);
+  --nav-bg: rgb(10, 10, 10);
+}
+
+/* Base glass panel */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-inset);
+}
+
+/* Stronger glass (for modals / focal panels) */
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--glass-inset);
+}
+
+/* Solid nav / sticky bar — no backdrop-filter: sticky + blur causes
+   scroll-repaint ghosting artifacts on some mobile browsers/GPUs */
+.glass-nav {
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* Glass with accent tint (for active/sale states) */
+.glass-accent {
+  background: rgba(255, 87, 34, 0.12);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 87, 34, 0.3);
+}
+
+/* Glass hover lift */
+.glass-hover {
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.glass-hover:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border-strong);
+  transform: translateY(-3px);
+}
+
+/* Ambient glow blobs — give the blur something to refract.
+   Place inside a position:relative container with overflow visible/hidden. */
+.glow-field {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.glow-field::before,
+.glow-field::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
+}
+.glow-field::before {
+  width: 38rem;
+  height: 38rem;
+  background: radial-gradient(circle, rgba(255, 87, 34, 0.35), transparent 70%);
+  top: -10rem;
+  right: -8rem;
+}
+.glow-field::after {
+  width: 32rem;
+  height: 32rem;
+  background: radial-gradient(circle, rgba(60, 90, 160, 0.3), transparent 70%);
+  bottom: -8rem;
+  left: -10rem;
+}
+
+/* Glass chip (size selectors, tags) */
+.glass-chip {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  transition: all 0.18s ease;
+}
+.glass-chip:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border-strong);
+}
+.glass-chip--active {
+  background: var(--glass-bg-strong);
+  border-color: var(--momo-accent);
+  color: var(--momo-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-hover:hover { transform: none; }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .glass-strong, .glass-nav, .glass-chip { background: rgba(20, 20, 20, 0.9); }
+  .glass-accent { background: rgba(255, 87, 34, 0.18); }
+}
+
+/* Nav icon buttons — adapt to theme, but stay light over the transparent hero */
+.nav-icon {
+  color: var(--momo-text);
+}
+.nav-icon:hover {
+  color: var(--momo-accent);
+}
+/* When navbar is transparent over the dark hero, force light icons */
+.nav-transparent .nav-icon {
+  color: #f5f5f5;
+}
+.nav-transparent .nav-icon:hover {
+  color: var(--momo-accent);
+}
+
+.nav-text { color: var(--momo-text); }
+.nav-transparent .nav-text { color: #f5f5f5; }
+
+/* ===== Arabic / RTL ===== */
+html[dir="rtl"] {
+  --font-display: "Cairo", sans-serif;
+  --font-body: "Cairo", sans-serif;
+}
+html[dir="rtl"] body {
+  font-family: "Cairo", sans-serif;
+}
+/* Flip horizontal margins/padding utilities that assume LTR in key spots */
+html[dir="rtl"] .announcement-track {
+  animation-direction: reverse;
+}
+/* Keep the accent underline/italic look sensible in Arabic */
+html[dir="rtl"] .heading-hero,
+html[dir="rtl"] .heading-section {
+  letter-spacing: 0;
+}
