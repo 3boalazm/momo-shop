@@ -458,3 +458,13 @@ html[dir="rtl"] .heading-hero,
 html[dir="rtl"] .heading-section {
   letter-spacing: 0;
 }
+/* Arabic (Cairo) wraps to more lines than the tight Latin line-heights allow for — loosen them so lines don't overlap */
+html[dir="rtl"] .heading-hero {
+  line-height: 1.25;
+}
+html[dir="rtl"] .heading-section {
+  line-height: 1.2;
+}
+html[dir="rtl"] .heading-subsection {
+  line-height: 1.35;
+}
