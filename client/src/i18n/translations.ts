@@ -24,7 +24,7 @@ export const translations = {
     // Announcement bar
     "announce.freeShipping": "FREE SHIPPING ON ALL ORDERS OVER 2,000 LE",
     "announce.newDrop": "NEW DROP — BUILT FOR CULTURE",
-    "announce.cod": "CASH ON DELIVERY ACROSS EGYPT",
+    "announce.cod": "SECURE ONLINE PAYMENT — CARD, MEEZA, VODAFONE CASH",
     "announce.limited": "LIMITED QUANTITIES · DON'T SLEEP ON IT",
 
     // Home
@@ -162,7 +162,7 @@ export const translations = {
     // Announcement bar
     "announce.freeShipping": "شحن مجاني على الطلبات فوق ٢٠٠٠ جنيه",
     "announce.newDrop": "دروب جديد — مصنوع للثقافة",
-    "announce.cod": "الدفع عند الاستلام في كل مصر",
+    "announce.cod": "دفع أونلاين آمن — فيزا، ميزة، فودافون كاش",
     "announce.limited": "كميات محدودة · متفوّتش الفرصة",
 
     // Home

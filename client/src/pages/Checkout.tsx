@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "wouter";
-import { Check, CreditCard, Banknote } from "lucide-react";
+import { Check, CreditCard } from "lucide-react";
 import { toast } from "sonner";
 import { createOrder, createPaymentIntention, validateCoupon, type AppliedCoupon } from "@/lib/api";
 import { useCart } from "@/contexts/CartContext";
@@ -10,13 +10,10 @@ import { EGYPT_GOVERNORATES } from "@shared/egypt";
 import { computeShipping } from "@shared/shipping";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type PaymentMethod = "online" | "cod";
-
 export default function Checkout() {
   const { items: cartItems, clearCart } = useCart();
   const { t } = useLanguage();
   const [step, setStep] = useState<"shipping" | "payment" | "confirmation">("shipping");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [orderNumber, setOrderNumber] = useState<string>("");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -95,7 +92,7 @@ export default function Checkout() {
 
       const result = await createOrder({
         items,
-        paymentMethod: paymentMethod === "cod" ? "COD" : "Online",
+        paymentMethod: "Online",
         shipping: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -110,30 +107,13 @@ export default function Checkout() {
         couponCode: coupon?.code,
       });
 
-      if (paymentMethod === "online") {
-        // Create a Paymob intention and open the hosted checkout.
-        // The order stays "Unpaid" until Paymob's webhook confirms payment.
-        try {
-          const { clientSecret, publicKey } = await createPaymentIntention(result.orderId);
-          setOrderNumber(result.orderNumber);
-          // Redirect to Paymob's unified checkout
-          const url = `https://accept.paymob.com/unifiedcheckout/?publicKey=${encodeURIComponent(publicKey)}&clientSecret=${encodeURIComponent(clientSecret)}`;
-          window.location.href = url;
-          return;
-        } catch (payErr) {
-          toast.error(
-            payErr instanceof Error ? payErr.message : "Could not start online payment. Try Cash on Delivery."
-          );
-          setIsSubmitting(false);
-          return;
-        }
-      }
-
-      // COD path
+      // Create a Paymob intention and open the hosted checkout.
+      // The order stays "Unpaid" until Paymob's webhook confirms payment.
+      const { clientSecret, publicKey } = await createPaymentIntention(result.orderId);
       setOrderNumber(result.orderNumber);
-      clearCart();
-      setStep("confirmation");
-      toast.success(`Order ${result.orderNumber} placed!`);
+      // Redirect to Paymob's unified checkout
+      const url = `https://accept.paymob.com/unifiedcheckout/?publicKey=${encodeURIComponent(publicKey)}&clientSecret=${encodeURIComponent(clientSecret)}`;
+      window.location.href = url;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to place order. Please try again.");
     } finally {
@@ -180,9 +160,7 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-dim">Payment Method:</span>
-                  <span className="font-semibold">
-                    {paymentMethod === "online" ? "Paid Online" : "Cash on Delivery"}
-                  </span>
+                  <span className="font-semibold">Paid Online</span>
                 </div>
               </div>
             </div>
@@ -347,51 +325,17 @@ export default function Checkout() {
             <div>
               <h2 className="heading-subsection mb-6">{t("checkout.paymentMethod")}</h2>
 
-              {/* Payment method selector */}
+              {/* Online payment — the only available method */}
               <div className="space-y-3 mb-6">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("cod")}
-                  className={`w-full text-left p-5 transition-all ${
-                    paymentMethod === "cod" ? "glass-accent" : "glass glass-hover"
-                  }`}
-                  style={{ borderRadius: "14px" }}
-                >
+                <div className="w-full text-left p-5 glass-accent" style={{ borderRadius: "14px" }}>
                   <div className="flex items-center gap-4">
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                      paymentMethod === "cod" ? "border-accent" : "border-momo"
-                    }`}>
-                      {paymentMethod === "cod" && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
-                    </div>
-                    <Banknote className="w-5 h-5 text-accent" />
-                    <div>
-                      <h3 className="font-bold">{t("checkout.cod")}</h3>
-                      <p className="text-dim text-sm">Pay when your order arrives.</p>
-                    </div>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("online")}
-                  className={`w-full text-left p-5 transition-all ${
-                    paymentMethod === "online" ? "glass-accent" : "glass glass-hover"
-                  }`}
-                  style={{ borderRadius: "14px" }}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                      paymentMethod === "online" ? "border-accent" : "border-momo"
-                    }`}>
-                      {paymentMethod === "online" && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
-                    </div>
                     <CreditCard className="w-5 h-5 text-accent" />
                     <div>
                       <h3 className="font-bold">{t("checkout.online")}</h3>
                       <p className="text-dim text-sm">Card, Meeza, Vodafone Cash, InstaPay.</p>
                     </div>
                   </div>
-                </button>
+                </div>
               </div>
 
               <div className="glass p-6 mb-6" style={{ borderRadius: "16px" }}>
@@ -462,11 +406,7 @@ export default function Checkout() {
                 disabled={isSubmitting}
                 className="w-full btn-primary"
               >
-                {isSubmitting
-                  ? "..."
-                  : paymentMethod === "online"
-                    ? t("checkout.continuePayment")
-                    : t("checkout.placeOrder")}
+                {isSubmitting ? "..." : t("checkout.continuePayment")}
               </Button>
 
               <Button

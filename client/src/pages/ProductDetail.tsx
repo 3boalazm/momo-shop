@@ -224,7 +224,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
                   <Plus className="w-4 h-4 group-open:rotate-45 transition-transform" />
                 </summary>
                 <div className="mt-3 text-sm text-[color:var(--momo-text)] opacity-80 space-y-1.5">
-                  <p>• Cash on delivery available across Egypt.</p>
+                  <p>• Secure online payment — card, Meeza, Vodafone Cash, InstaPay.</p>
                   <p>• Free shipping on orders over 2,000 {CURRENCY_SYMBOL}.</p>
                   <p>• Delivery within 2–5 business days.</p>
                   <p>• Exchange within 14 days if unworn with tags.</p>
