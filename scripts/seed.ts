@@ -1,5 +1,5 @@
 /**
- * Seed script — inserts OLTRÈ Collective's core products + variants into Neon.
+ * Seed script — inserts OLTRÈ Collective's core products + variants into Postgres.
  *
  * Usage:
  *   pnpm db:seed          (reads DATABASE_URL from .env)
@@ -7,8 +7,8 @@
  * Idempotent: skips products whose slug already exists.
  */
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
 import { eq } from "drizzle-orm";
 import * as schema from "../drizzle/schema";
 
@@ -77,6 +77,9 @@ const PRODUCTS: SeedProduct[] = [
   },
 ];
 
+/** Held at module scope so the finally-block can close it and let node exit. */
+let pool: pg.Pool | null = null;
+
 function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
@@ -87,7 +90,13 @@ async function main() {
     console.error("DATABASE_URL is not set");
     process.exit(1);
   }
-  const db = drizzle(neon(url), { schema });
+  pool = new pg.Pool({
+    connectionString: url,
+    ssl: (process.env.DATABASE_SSL ?? "require").toLowerCase() === "disable"
+      ? false
+      : { rejectUnauthorized: false },
+  });
+  const db = drizzle(pool, { schema });
 
   for (const p of PRODUCTS) {
     // Skip if slug already exists (idempotent)
@@ -133,7 +142,9 @@ async function main() {
   console.log("\nSeed complete.");
 }
 
-main().catch((err) => {
-  console.error("Seed failed:", err);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error("Seed failed:", err);
+    process.exitCode = 1;
+  })
+  .finally(() => pool?.end());

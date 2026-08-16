@@ -47,7 +47,7 @@ export async function requireAdmin(req: VercelRequest, res: VercelResponse): Pro
   }
 
   if (!masterToken) {
-    res.status(500).json({ error: "Server misconfigured: ADMIN_TOKEN is not set. Add it in Vercel env vars and redeploy." });
+    res.status(500).json({ error: "Server misconfigured: ADMIN_TOKEN is not set. Add it to /srv/oltre/shared/.env and restart oltre-api." });
     return false;
   }
   res.status(401).json({ error: "Unauthorized" });
@@ -109,7 +109,7 @@ export async function requireSuperAdmin(req: VercelRequest, res: VercelResponse)
 export function describeServerError(err: unknown, fallback: string): string {
   const msg = err instanceof Error ? err.message : String(err);
   if (/JWT_SECRET/i.test(msg)) {
-    return "Server misconfigured: JWT_SECRET is not set. Add it in Vercel env vars and redeploy.";
+    return "Server misconfigured: JWT_SECRET is not set. Add it to /srv/oltre/shared/.env and restart oltre-api.";
   }
   if (/column .* does not exist/i.test(msg) || /relation .* does not exist/i.test(msg)) {
     return "Database schema is out of date. Run `pnpm db:push` against your database, then try again.";
@@ -118,7 +118,7 @@ export function describeServerError(err: unknown, fallback: string): string {
     return "Database schema is out of date (a required column is missing data). Run `pnpm db:push`.";
   }
   if (/DATABASE_URL/i.test(msg)) {
-    return "Server misconfigured: DATABASE_URL is not set. Add it in Vercel env vars and redeploy.";
+    return "Server misconfigured: DATABASE_URL is not set. Add it to /srv/oltre/shared/.env and restart oltre-api.";
   }
   return fallback;
 }

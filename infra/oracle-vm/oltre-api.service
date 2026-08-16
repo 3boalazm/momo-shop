@@ -1,0 +1,55 @@
+[Unit]
+Description=OLTRE Collective API + storefront
+Documentation=https://github.com/3boalazm/Momo-Collective
+After=network-online.target postgresql.service pgbouncer.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=oltre
+Group=oltre
+WorkingDirectory=/srv/oltre/current
+
+# Secrets live here, root-readable + oltre-readable only (chmod 640).
+EnvironmentFile=/srv/oltre/shared/.env
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+Environment=STATIC_DIR=/srv/oltre/current/dist/public
+
+ExecStart=/usr/bin/node /srv/oltre/current/dist/server.js
+
+# The app drains in-flight requests on SIGTERM (see server-vm/index.ts) and
+# force-exits after 15s, so give it a little more than that before SIGKILL.
+KillSignal=SIGTERM
+TimeoutStopSec=20
+Restart=always
+RestartSec=3
+
+# Crash-loop guard: if it dies 5 times in 60s, stop trying and stay failed so
+# the alert is visible instead of the box quietly thrashing.
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Hardening. The process needs to read its code and bind a high port; ---
+# --- nothing else on the box should be reachable from it.                ---
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+ReadWritePaths=/srv/oltre/shared/uploads
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=oltre-api
+
+[Install]
+WantedBy=multi-user.target

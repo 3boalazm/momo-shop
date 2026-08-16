@@ -4,7 +4,7 @@ import { getDb, schema } from "../server-lib/db.js";
 import { applyCors } from "../server-lib/utils.js";
 
 /**
- * Health check — verifies the serverless function runs AND the Neon DB is reachable.
+ * Health check — verifies the serverless function runs AND the Postgres DB is reachable.
  * Open /api/health in the browser. No auth required (returns no sensitive data).
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
